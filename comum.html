@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Científica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url(01.png) no-repeat center center fixed;
+            background-size: cover;
+            color: #ebe5e5;
+        }
+    .calculator {
+        padding: 20px;
+        border: 3px solid #ebe5e5;
+        border-radius: 10px;
+        background-color: #070707;
+        text-align: center;
+    }
+
+    .display {
+        width: 220px;
+        height: 40px;
+        margin-bottom: 10px;
+        font-size: 18px;
+        text-align: right;
+        padding-right: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #1e1e1e;
+        color: #ebe5e5;
+    }
+
+    .button {
+        width: 45px;
+        height: 45px;
+        margin: 5px;
+        font-size: 18px;
+        background-color: #007BFF;
+        color: rgb(255, 251, 251);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+    .operator {
+        background-color: #a52406;
+    }
+
+    .operator:hover {
+        background-color: #a03210;
+    }
+
+    .result-box {
+        width: 260px;
+        padding: 10px;
+        margin-top: 20px;
+        border: 3px solid #ebe5e5;
+        border-radius: 10px;
+        background-color: #070707;
+        color: #ebe5e5;
+        font-size: 18px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled>
+        <br>
+        <button class="button" onclick="appendNumber(7)">7</button>
+        <button class="button" onclick="appendNumber(8)">8</button>
+        <button class="button" onclick="appendNumber(9)">9</button>
+        <button class="button operator" onclick="chooseOperation('/')">/</button>
+        <br>
+        <button class="button" onclick="appendNumber(4)">4</button>
+        <button class="button" onclick="appendNumber(5)">5</button>
+        <button class="button" onclick="appendNumber(6)">6</button>
+        <button class="button operator" onclick="chooseOperation('*')">*</button>
+        <br>
+        <button class="button" onclick="appendNumber(1)">1</button>
+        <button class="button" onclick="appendNumber(2)">2</button>
+        <button class="button" onclick="appendNumber(3)">3</button>
+        <button class="button operator" onclick="chooseOperation('-')">-</button>
+        <br>
+        <button class="button" onclick="appendNumber(0)">0</button>
+        <button class="button" onclick="clearDisplay()">C</button>
+        <button class="button" onclick="calculate()">=</button>
+        <button class="button operator" onclick="chooseOperation('+')">+</button>
+        <br>
+        <button class="button" onclick="appendFunction('sin(')">sin</button>
+        <button class="button" onclick="appendFunction('cos(')">cos</button>
+        <button class="button" onclick="appendFunction('tan(')">tan</button>
+        <button class="button" onclick="appendFunction('sqrt(')">√</button>
+        <br>
+        <button class="button" onclick="appendFunction('log(')">log</button>
+        <button class="button" onclick="appendFunction('exp(')">exp</button>
+        <button class="button" onclick="appendFunction('^')">^</button>
+        <button class="button" onclick="appendFunction('(')">(</button>
+        <button class="button" onclick="appendFunction(')')">)</button>
+    </div>
+    <div id="result" class="result-box">Resultado: </div>
+<script>
+    let displayValue = '';
+    let shouldResetDisplay = false;
+
+    function appendNumber(number) {
+        if (shouldResetDisplay) {
+            displayValue = '';
+            shouldResetDisplay = false;
+        }
+        displayValue += number;
+        document.getElementById('display').value = displayValue;
+    }
+
+    function appendFunction(func) {
+        if (shouldResetDisplay) {
+            displayValue = '';
+            shouldResetDisplay = false;
+        }
+        displayValue += func;
+        document.getElementById('display').value = displayValue;
+    }
+
+    function chooseOperation(operation) {
+        if (displayValue === '') return;
+        displayValue += ` ${operation} `;
+        document.getElementById('display').value = displayValue;
+    }
+
+    function calculate() {
+        try {
+            displayValue = displayValue.replace('^', '**');
+            let result = eval(displayValue);
+            document.getElementById('result').innerText = `Resultado: ${result}`;
+            document.getElementById('display').value = result;
+            displayValue = result.toString();
+            shouldResetDisplay = true;
+        } catch {
+            document.getElementById('result').innerText = 'Erro na expressão';
+            shouldResetDisplay = true;
+        }
+    }
+
+    function clearDisplay() {
+        displayValue = '';
+        shouldResetDisplay = false;
+        document.getElementById('display').value = displayValue;
+        document.getElementById('result').innerText = 'Resultado: ';
+    }
+</script>
+</body>
+</html>
